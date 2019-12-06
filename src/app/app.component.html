@@ -28,12 +28,64 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let customer of customers">
+            <tr *ngFor="let customer of customers" >
               <td>{{customer.name}}</td>
               <td>{{customer.phoneNumber}}</td>
               <td>{{customer.address}}</td>
               <td>{{customer.dateOfWork}}</td>
               <td>{{customer.technicianName}}</td>
+              <td>
+                <ng-template #popContent class="ml-3">
+                  <div class="m-3">
+                    <b>Customer Name:</b> {{customer.name}}<br/>
+                    <b>Customer Contact:</b> {{customer.phoneNumber}} <br/>
+                    <b>Customer Address:</b> {{customer.address}} <br/>
+                    <b>Model Name:</b> {{customer.modelName}} <br/>
+                    <b>Date of work:</b> {{customer.dateOfWork}} <br/>
+                    <b>Technician Name:</b> {{customer.technicianName}} <br/>
+                    <div *ngIf = "customer.partCCV > 0">
+                        <b>CVV:</b> {{customer.partCCV}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partSedimentalfilter > 0">
+                        <b>Sedimentalfilter:</b> {{customer.partSedimentalfilter}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partCarbonfilter > 0">
+                        <b>Carbonfilter:</b> {{customer.partCarbonfilter}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partROMembrane > 0">
+                        <b>ROMembrane:</b> {{customer.partROMembrane}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partMultilayer > 0">
+                        <b>Multilayer:</b> {{customer.partMultilayer}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partPPSpun > 0">
+                        <b>PPSpun </b>: {{customer.partPPSpun}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partPump > 0">
+                        <b>Pump:</b> {{customer.partPump}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partSV > 0">
+                        <b>SV:</b> {{customer.partSV}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partSMPS > 0">
+                        <b>SMPS:</b> {{customer.partSMPS}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partVVLamp > 0">
+                        <b>VVLamp:</b> {{customer.partVVLamp}}<br/>
+                    </div>
+                    <div *ngIf = "customer.partService > 0">
+                        <b>Service:</b> {{customer.partService}}<br/>
+                    </div>
+                    <b>isAmc:</b> {{customer.isAmc}}<br/>
+                    <b>amcDate:</b> {{customer.amcDate}}<br/>
+                    <b>amcRenewed:</b> {{customer.amcRenewed}}<br/><br/>
+                    <!-- <b>Total: </b> {{customer.total}} -->
+                  </div>
+                </ng-template>
+                <button type="button" class="btn btn-outline-primary" [ngbPopover]="popContent" placement="left">
+                  <div class="ml-2">Details</div>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
