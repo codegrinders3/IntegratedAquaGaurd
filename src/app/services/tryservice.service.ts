@@ -5,29 +5,54 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    'Authorization': 'my-auth-token'
+  })
+};
+
 @Injectable()
 
 export class TryService {
     customUrl = "http://localhost:8080/customer/";
-
+    search = new URLSearchParams();
     constructor(private http: HttpClient) { }
     
+    getAllCustomers2(url, requestBody): Observable<Customer[]> {
+      console.log('hereee' + url);
+      return this.http.get<Customer[]>(this.customUrl+ url, {params: {payload: requestBody}})
+      .pipe(retry(1), catchError(this.handleError)
+      )
+    }
+
     // HttpClient API post() method => Create employee
-    getTest(url, requestBody): Observable<Customer[]> {
+  getFilteredData(url, requestBody): Observable<Customer[]> {
       //console.log();
-      return this.http.post<Customer[]>(this.customUrl+ url, requestBody)
+      return this.http.get<Customer[]>(this.customUrl+ url, {params: {payload: requestBody}})
       .pipe(retry(1), catchError(this.handleError)
       )
   }  
 
   getAllCustomers(): Observable<any> {
-    return this.http.post<Customer>(this.customUrl)
+    return this.http.get<Customer>(this.customUrl)
     .pipe(
       retry(1),
       catchError(this.handleError)
     )
   }
 
+  getCustomer(): Observable<any> {
+      return this.http.get(this.customUrl);
+  }
+  
+  addCustomer(customer: String): Observable<any> {
+    return this.http.post(this.customUrl+ 'addcustomer', customer, httpOptions)
+    .pipe(retry(1), catchError(this.handleError)
+    )
+  }
+
+  
   // Error handling 
   handleError(error) {
     let errorMessage = '';
@@ -41,8 +66,4 @@ export class TryService {
     window.alert(errorMessage);
     return throwError(errorMessage);
  }
-
-  getCustomer(): Observable<any> {
-      return this.http.get(this.customUrl);
-  }
 }
