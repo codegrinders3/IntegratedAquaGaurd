@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, FormControl, NgForm } from '@angular/forms';
 })
 
 export class AppComponent {
-  title = 'new-aqua-try';
+  title = 'AquaGaurd Solutions';
   addButton: boolean = false;
   customers: Customer[];
   customer: Customer;
@@ -76,16 +76,18 @@ export class AppComponent {
     ];
   }
 
-  onSubmit() {
-    if (this.form.value.search){
-      this.tryService.getAllCustomers2(this.form.value.orders, this.form.value.search).subscribe((data:[]) => {
-        this.customers = data;
-      })
+  onSubmit(buttonType) {
+    if(buttonType == "filter"){
+      if (this.form.value.search){
+        this.tryService.getCustomerOnParam(this.form.value.orders, this.form.value.search).subscribe((data:[]) => {
+          this.customers = data;
+        })
+      }
     }
-  }
 
-  onReset() {
-    this.ngOnInit();
+    if(buttonType == "reset"){
+      this.getAllCustomers();
+    }
   }
 
   getAllCustomers(): void {
@@ -122,7 +124,7 @@ export class AppComponent {
                       this.addNewForm.get('amcDate').value,
                       this.addNewForm.get('amcRenewed').value
                     ) 
-    this.tryService.addCustomer(JSON.stringify(this.customer)).subscribe((data: []) => {
+    this.tryService.addCustomer(this.customer).subscribe((data: []) => {
       console.log(data); 
     });
     this.toggleButton();
