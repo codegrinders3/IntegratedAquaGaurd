@@ -13,17 +13,18 @@ import { FormBuilder, FormGroup, FormControl, NgForm } from '@angular/forms';
 export class AppComponent {
   title = 'AquaGaurd Solutions';
   addButton: boolean = false;
-  customers: Customer[];
+  customers = [];
+  insuredCustomers = [];
   customer: Customer;
-  testOutputString: string;
   columns:string[] = ["Customer Name", "Phone Number", "Customer Address", "Date of Work", "Technician Name"]; 
 
   form: FormGroup;
   addNewForm: FormGroup;
   orders = [];
   search = '';
-  
-  total = 0;
+  page = 1;
+  pageSize = 4;
+  collectionSize = this.customers.length;
 
   constructor(private formBuilder: FormBuilder, public tryService: TryService) {
       this.form = this.formBuilder.group({
@@ -64,6 +65,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.getAllCustomers();
+    this.getInsuredCustomers();
   }
 
   getOrders() {
@@ -81,6 +83,7 @@ export class AppComponent {
       if (this.form.value.search){
         this.tryService.getCustomerOnParam(this.form.value.orders, this.form.value.search).subscribe((data:[]) => {
           this.customers = data;
+          //console.log(this.customers.length)
         })
       }
     }
@@ -90,11 +93,20 @@ export class AppComponent {
     }
   }
 
-  getAllCustomers(): void {
+  getAllCustomers(): Customer[] {
     this.tryService.getAllCustomers().subscribe((data: []) => {
-      this.customers = data;  
+      this.customers = data; 
+      return this.customers
+      .map((this.customers, i) => ({id: i + 1, ...this.customers}))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);  
     });
   } 
+
+  getInsuredCustomers():void{
+    this.tryService.getInsuredCustomers().subscribe((data: []) =>{
+      this.insuredCustomers = data;
+    });
+  }
 
   toggleButton(): void {
       this.addButton = !this.addButton; 
