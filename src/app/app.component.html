@@ -2,23 +2,23 @@
   <h1 style="text-align: center; color: white;">{{ title }}!</h1>
   
   <!-- Creating tabs and table in each tab-->
-  <div style="padding: 30px; background-color: white;">
+  <div style="padding: 40px; background-color: whitesmoke;">
     <ngb-tabset>
         <ngb-tab title="View All Customers">
           <ng-template ngbTabContent>
-            <form class="form-inline form-group mt-3" [formGroup]="form" (ngSubmit)="onSubmit(buttonType)">
-              <label style ="margin-right: 10px" for="orders">Apply Filter</label>
+            <form style="margin-left: 200px;" class="form-inline form-group mt-4" [formGroup]="form" (ngSubmit)="onSubmit(buttonType)">
+              <label style ="margin-right: 10px" for="orders">Choose Filter</label>
               <select class="form-control" formControlName="orders" id="orders">
                 <option *ngFor="let order of orders; let i = index" [value]="orders[i].id">
                   {{orders[i].name}}
                 </option>
               </select>
               <input class="form-control" type="text" formControlName="search">
-              <button class = "btn btn-primary" type="submit" (click)="onSubmit('filter')"> Submit </button>
+              <button style ="margin-left: 10px" class = "btn btn-primary" type="submit" (click)="onSubmit('filter')"> Submit </button>
               <button class = "btn btn-primary" type="reset" (click)="onSubmit('reset')" style = "margin-left: 10px;" > Reset </button>
-          </form>
+            </form>
           
-          <table style = "border: black; border-width: 1px; border-style: solid;"class="table">
+          <table style = "margin-top: 40px;" class="table">
             <thead class="thead-light">
               <tr>
                 <th *ngFor="let column of columns" scope="col">{{column}}</th>
@@ -85,6 +85,16 @@
               </tr>
             </tbody>
           </table>
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+            </ngb-pagination>
+          
+            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+              <option [ngValue]="5">5 items per page</option>
+              <option [ngValue]="10">10 items per page</option>
+              <option [ngValue]="15">15 items per page</option>
+            </select>
+          </div>
 
           <button class="mr-2 btn-primary" (click)="toggleButton()">New Record</button>
           <div style="width: 1000px;" *ngIf="addButton">
@@ -106,7 +116,7 @@
                   <input formControlName="modelName" type="text" class="ml-3 d-inline" placeholder="Model Name">
                 </div>
                 <div class="form-group">
-                  <input formControlName="dateOfWork" type="text" class="ml-3 d-inline" placeholder="Date Of Work">
+                  <input formControlName="dateOfWork" type="text" ngbDatepicker #d="ngbDatepicker" class="ml-3 d-inline" placeholder="Date Of Work">
                 </div>
                 <div class="form-group">
                   <input formControlName="monthOfWork" type="text" class="ml-3 d-inline" placeholder="Month Of Work">
@@ -179,16 +189,16 @@
 
       <ngb-tab title="View Insured Customers">
         <ng-template ngbTabContent>
-          <form class="" [formGroup]="form" (ngSubmit)="onSubmit(buttonType)">
-            <label for="orders">Search Filter</label>
-            <select formControlName="orders" id="orders">
+          <form class="form-inline form-group mt-3" [formGroup]="form" (ngSubmit)="onSubmit(buttonType)">
+            <label style ="margin-right: 10px" for="orders">Apply Filter</label>
+            <select class="form-control" formControlName="orders" id="orders">
               <option *ngFor="let order of orders; let i = index" [value]="orders[i].id">
                 {{orders[i].name}}
               </option>
             </select>
-            <input type="text" formControlName="search">
-            <button type="submit" (click)="onSubmit('filter')"> Submit </button>
-            <button type="reset" (click)="onSubmit('reset')"> Reset </button>
+            <input class="form-control" type="text" formControlName="search">
+            <button class = "btn btn-primary" type="submit" (click)="onSubmit('filter')"> Submit </button>
+            <button class = "btn btn-primary" type="reset" (click)="onSubmit('reset')" style = "margin-left: 10px;" > Reset </button>
         </form>
         <table class="table">
           <thead class="thead-light">
@@ -197,7 +207,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let customer of customers" >
+            <tr *ngFor="let customer of insuredCustomers" >
               <td>{{customer.name}}</td>
               <td>{{customer.phoneNumber}}</td>
               <td>{{customer.address}}</td>
